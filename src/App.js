@@ -1,26 +1,32 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import TableComponent from './TableComponent.js'
+import {BrowserRouter, Route} from 'react-router-dom'
+import UserComponent from './UserComponent.js'
+import UserContext from './Context.js'
 
 class App extends Component {
+  
+  state={
+    selectedUser: {}
+  }
+
+  setSelectedUser = (user) => {
+    this.setState({selectedUser: user})
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <UserContext.Provider
+        value = {{
+          selectedUser: this.state.selectedUser,
+          setSelectedUser: this.setSelectedUser
+        }}
+      >
+        <BrowserRouter>
+            <Route exact path="/" component={TableComponent}/>
+            <Route path="/user/:id" component={UserComponent}/>
+        </BrowserRouter>
+      </UserContext.Provider>
     );
   }
 }
